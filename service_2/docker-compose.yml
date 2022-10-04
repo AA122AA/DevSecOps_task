@@ -1,26 +1,25 @@
-version: "3.9"
+version: "3.8"
 services:
-  postgres:
-    image: postgres:14.5
+  mongodb:
+    image: mongo:4.2
+    container_name: mongodb
     environment:
-      POSTGRES_DB: "serv_2"
-      POSTGRES_USER: "artem"
-      POSTGRES_PASSWORD: "0000"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      - MONGO_INITDB_ROOT_USERNAME=artem
+      - MONGO_INITDB_ROOT_PASSWORD=0000
     volumes:
-      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - ./db:/var/lib/postgresql/data/
+      - ./db:/data/db
+    networks:
+      - mongodb_network
     ports:
-      - "5432:5432"
+      - 27017:27017
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U artem -d serv_2" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+      test: echo 'db.runCommand("ping").ok' | mongo 10.10.10.60:27017/test --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 1G
+
+networks:
+  mongodb_network:
+    external: false
