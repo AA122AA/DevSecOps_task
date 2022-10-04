@@ -13,7 +13,6 @@ text = db.text
 class HelloWorld(Resource):
     def get(self):
         doc = text.find_one()['text']
-        print(doc)
         return {'response': doc}
 
 api.add_resource(HelloWorld, '/')
