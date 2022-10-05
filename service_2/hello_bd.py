@@ -5,7 +5,7 @@ from pymongo import MongoClient
 app = Flask(__name__)
 api = Api(app)
 
-client = MongoClient('localhost', 27017, username="artem", password="0000")
+client = MongoClient('mongodb', 27017, username="artem", password="0000")
 
 db = client.serv_2_db
 text = db.text

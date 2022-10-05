@@ -11,5 +11,7 @@
 `psql -h 127.0.0.1 -p 5432 -U artem serv_2`
 [psql cheatsheet](https://postgrescheatsheet.com/#/tables)
 
-создание пользователя mongo
- `db.command("createUser", "artem", pwd="0000", roles=["readWrite"])`
+Как посмотереть коллекцию в mongo 
+`use serv_2_db`
+`db.text.find()`
+

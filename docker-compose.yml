@@ -1,6 +1,25 @@
 version: "3.9"
 
 services:
+  serv_1_web:
+    build: ./service_1
+    container_name: serv_1_web
+    ports:
+      - "8000:5000"
+
+  serv_2_web:
+    build: ./service_2
+    container_name: serv_2_web
+    ports:
+      - "8001:5000"
+    networks:
+      - mongodb_network
+
+  # serv_3_web:
+  #   build: ./service_3
+  #   container_name: serv_2_web
+  #   ports:
+  #     - "8001:5000"
 
   mongodb:
     image: mongo:4.2
@@ -10,6 +29,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=0000
     volumes:
       - ./db:/data/db
+      - ./service_2/docker-entrypoint-initdb.d/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     networks:
       - mongodb_network
     ports:
@@ -21,7 +41,6 @@ services:
       retries: 3
       start_period: 30s
     restart: unless-stopped
-
 networks:
   mongodb_network:
     external: false
