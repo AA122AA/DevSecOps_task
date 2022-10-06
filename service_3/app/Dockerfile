@@ -5,4 +5,4 @@ RUN pip install -r requirements.txt
 COPY . /app
 ENV FLASK_RUN_HOST=0.0.0.0
 EXPOSE 5000
-CMD ["flask", "--app", "hello.py", "run"]
+CMD ["flask", "--app", "hello_rabbit.py", "run"]

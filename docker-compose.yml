@@ -15,11 +15,20 @@ services:
     networks:
       - mongodb_network
 
-  # serv_3_web:
-  #   build: ./service_3
-  #   container_name: serv_2_web
-  #   ports:
-  #     - "8001:5000"
+  serv_3_web:
+    build: ./service_3/app
+    container_name: serv_3_web
+    ports:
+      - "8002:5000"
+    networks:
+      - rabbitmq_network
+
+  receiver:
+    build: ./service_3/receiver
+    container_name: receiver
+    networks:
+      - rabbitmq_network
+      - mongodb_network
 
   mongodb:
     image: mongo:4.2
@@ -41,6 +50,18 @@ services:
       retries: 3
       start_period: 30s
     restart: unless-stopped
+
+  rabbitmq:
+    image: 'rabbitmq:3.11'
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+    networks:
+      - mongodb_network
+      - rabbitmq_network
+
 networks:
   mongodb_network:
+    external: false
+  rabbitmq_network:
     external: false

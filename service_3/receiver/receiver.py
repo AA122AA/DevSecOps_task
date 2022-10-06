@@ -1,13 +1,13 @@
 import pika, sys, os
 from pymongo import MongoClient
 
-client = MongoClient('localhost', 27017, username='artem', password='0000')
+client = MongoClient('mongodb', 27017, username='artem', password='0000')
 
 db = client.serv_2_db
 text = db.text
 
 def main():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
     channel = connection.channel()
 
     channel.queue_declare(queue='hello')
