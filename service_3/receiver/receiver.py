@@ -7,17 +7,20 @@ db = client.serv_2_db
 text = db.text
 
 def main():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
     channel = connection.channel()
 
     channel.queue_declare(queue='hello')
 
     def callback(ch, method, properties, body):
-        doc = {
-			'response': f'{body}'
-		}
-        text.insert_one(doc)
-        print(" [x] Inserted %r" % body)
+        if body == b"Health":
+            print("Healthy")
+        else:
+            doc = {
+			    'response': f'{body}'
+		    }
+            text.insert_one(doc)
+            print(" [x] Inserted %r" % body)
 
     channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
 

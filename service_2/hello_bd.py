@@ -15,7 +15,12 @@ class HelloWorld(Resource):
         doc = text.find_one()['text']
         return {'response': doc}
 
+class Health(Resource):
+    def get(self):
+        return {'response': 'healthy'}
+
 api.add_resource(HelloWorld, '/')
+api.add_resource(Health, '/health')
 
 if __name__ == '__main__':
     app.run(debug=True)

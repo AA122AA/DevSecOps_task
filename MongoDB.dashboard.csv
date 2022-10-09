@@ -1,0 +1,2 @@
+﻿"Average of docker.memory.usage.total","Average of docker.cpu.total.pct","Last value of docker.network.inbound.bytes","Last value of docker.network.outbound.bytes","Last value of docker.healthcheck.status"
+"143.31MB","1.33%","19.78KB","25.39KB"," - "

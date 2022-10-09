@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:5000"
     healthcheck:
-      test: curl -sS http://localhost:5000 || echo 1
+      test: python check_health.py
       interval: 30s
       timeout: 10s
       retries: 3
@@ -21,6 +21,13 @@ services:
       - "8001:5000"
     networks:
       - mongodb_network
+    healthcheck:
+      test: python check_health.py
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
 
   serv_3_web:
     build: ./service_3/app
@@ -29,6 +36,13 @@ services:
       - "8002:5000"
     networks:
       - rabbitmq_network
+    healthcheck:
+      test: python check_health.py
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
 
   receiver:
     build: ./service_3/receiver
@@ -36,6 +50,16 @@ services:
     networks:
       - rabbitmq_network
       - mongodb_network
+    depends_on:
+      - mongodb
+      - rabbitmq
+    healthcheck:
+      test: python check_health.py
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
 
   mongodb:
     image: mongo:4.2
@@ -51,7 +75,7 @@ services:
     ports:
       - 27017:27017
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo 10.10.10.60:27017/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
       interval: 30s
       timeout: 10s
       retries: 3
@@ -66,6 +90,12 @@ services:
     networks:
       - mongodb_network
       - rabbitmq_network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 30s
 
   elasticsearch:
     build: ./health_check/elasticsearch/

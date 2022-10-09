@@ -14,7 +14,7 @@ metricbeat.modules:
     - "cpu"
     - "diskio"
     - "event"
-    # - "healthcheck"
+    - "healthcheck"
     - "info"
     #- "image"
     - "memory"

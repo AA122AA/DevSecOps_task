@@ -18,7 +18,12 @@ class HelloWorld(Resource):
         connection.close()
         return {'response': 'Message has been produced'}
 
+class Health(Resource):
+    def get(self):
+        return {'response': 'healthy'}
+        
 api.add_resource(HelloWorld, '/')
+api.add_resource(Health, '/health')
 
 if __name__ == '__main__':
     app.run(debug=True)
