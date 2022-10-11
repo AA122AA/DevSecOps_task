@@ -147,6 +147,12 @@ services:
       - elasticsearch
     restart: unless-stopped
 
+  creator:
+    build: ./health_check/creator/
+    container_name: creator
+    networks:
+      - elk
+
 networks:
   mongodb_network:
     external: false
